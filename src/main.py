@@ -8,7 +8,7 @@ from aiogram.enums import ParseMode
 from config import settings
 from handlers import router as main_router
 from middlewares import register_global_middlewares
-from utils import setup_logging, on_startup, on_shutdown
+from utils import on_startup, on_shutdown, setup_logging
 
 
 async def main():

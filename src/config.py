@@ -1,12 +1,16 @@
+import os
 from typing import List
 
 from pydantic import BaseModel, PostgresDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+ENV_PATH = os.path.join(os.path.dirname(__file__), ".env")
+ENV_TEMPLATE_PATH = os.path.join(os.path.dirname(__file__), ".env.template")
+
 
 class BotConfig(BaseModel):
-    token: str
-    admins: str
+    token: str = None
+    admins: str = None
 
     @property
     def admin_ids(self) -> List[int]:
@@ -14,11 +18,11 @@ class BotConfig(BaseModel):
 
 
 class DatabaseConfig(BaseModel):
-    url: PostgresDsn
-    echo: bool
-    echo_pool: bool
-    pool_size: int
-    max_overflow: int
+    url: PostgresDsn = None
+    echo: bool = True
+    echo_pool: bool = False
+    pool_size: int = 50
+    max_overflow: int = 10
 
     naming_convention: dict[str, str] = {
         "ix": "ix_%(column_0_label)s",
@@ -31,7 +35,7 @@ class DatabaseConfig(BaseModel):
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=(".env.template", ".env"),
+        env_file=(ENV_TEMPLATE_PATH, ENV_PATH),
         env_file_encoding="utf-8",
         case_sensitive=False,
         env_nested_delimiter="__",

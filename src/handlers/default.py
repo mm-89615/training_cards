@@ -2,14 +2,14 @@ from aiogram import Router
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message
 
-from database.requests import Requests
+from database.repo import Request
 from keyboards import start_kb
 
 router = Router(name=__name__)
 
 
 @router.message(CommandStart())
-async def start(message: Message, request: Requests):
+async def start(message: Message, request: Request):
     await request.users.get_or_create_user(
         tg_id=message.from_user.id,
         username=message.from_user.username,
