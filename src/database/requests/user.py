@@ -15,7 +15,6 @@ class UserRequests(BaseRequest):
             username: Optional[str] = None,
             first_name: Optional[str] = None,
             last_name: Optional[str] = None,
-            updated_at: Optional[datetime] = None,
     ):
         insert_stmt = (
             insert(User)
@@ -37,4 +36,5 @@ class UserRequests(BaseRequest):
             .returning(User)
         )
         result = await self.session.execute(insert_stmt)
+        await self.session.commit()
         return result.scalar_one()

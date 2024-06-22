@@ -6,7 +6,7 @@ from filters import IsAdmin
 from keyboards import admin_kb
 
 router = Router(name=__name__)
-# router.message.filter()
+router.message.filter(IsAdmin())
 
 
 @router.message(F.text.in_(["⚙️ Админ панель", "/admin_panel"]))
