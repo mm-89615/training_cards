@@ -1,0 +1,11 @@
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+aiogram = "^3.8.0"
+sqlalchemy = "^2.0.31"
+alembic = "^1.13.1"
+pydantic-settings = "^2.3.3"
+asyncpg = "^0.29.0"
+betterlogging = "^1.0.0"
