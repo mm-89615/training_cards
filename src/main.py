@@ -3,10 +3,9 @@ import logging
 from typing import List
 
 import betterlogging as bl
-from aiogram import Bot, Dispatcher, Router
+from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.fsm.storage.memory import MemoryStorage
 
 from config import settings
 
@@ -35,10 +34,11 @@ def setup_logging():
 async def main():
     setup_logging()
 
-    bot = Bot(token=settings.bot.token,
-              default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+    bot = Bot(
+        token=settings.bot.token,
+        default=DefaultBotProperties(parse_mode=ParseMode.HTML),
+    )
     dp = Dispatcher()
-
 
     await bot.delete_webhook(drop_pending_updates=True)
     await on_startup(bot, settings.bot.admin_ids)
@@ -46,9 +46,8 @@ async def main():
     await dp.start_polling(bot)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     try:
         asyncio.run(main())
-
     except (KeyboardInterrupt, SystemExit):
         logging.error("Бот остановлен!")

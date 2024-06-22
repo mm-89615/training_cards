@@ -9,3 +9,7 @@ alembic = "^1.13.1"
 pydantic-settings = "^2.3.3"
 asyncpg = "^0.29.0"
 betterlogging = "^1.0.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+
