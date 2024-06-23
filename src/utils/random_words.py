@@ -7,6 +7,8 @@ from utils.states import LearningWordState
 
 async def get_random_words(msg: Message | CallbackQuery, request: Request):
     find_word = await request.words.get_new_word_not_in_user_words(msg.from_user.id)
+    if find_word is None:
+        return None
     other_words = await request.words.get_random_words(find_word.id)
     data = {
         "ru_correct": find_word.in_russian,
@@ -25,7 +27,7 @@ def get_words_for_kb(data: dict[str, str]):
 
 
 async def set_states(state: FSMContext, data: dict[str, str]):
-    await state.set_state(LearningWordState.start)
+    await state.set_state(LearningWordState.type_learning)
     await state.update_data(en_correct=data["en_correct"],
                             ru_correct=data["ru_correct"],
                             incorrect=data["incorrect"])

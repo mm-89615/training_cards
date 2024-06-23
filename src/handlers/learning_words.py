@@ -11,27 +11,45 @@ from utils.states import LearningWordState
 router = Router(name=__name__)
 
 
+@router.message(StateFilter(None), F.text == "📖 Повторить слова")
+async def repeat_words(message: Message, request: Request):
+    deta = await request.words.get_new_word_in_user_words(message.from_user.id)
+    if deta is None:
+        print('no words')
+    else:
+        print(deta.in_english, deta.in_russian)
+
+
 @router.message(StateFilter(None), F.text == "📝 Учить новые слова")
-async def learning_new_words(message: Message, state: FSMContext, request: Request):
+async def new_words(message: Message, state: FSMContext, request: Request):
     data = await get_random_words(message, request)
+    if data is None:
+        return message.answer(f"Слова для изучения закончились!\n"
+                              f"Вы можете повторить изученные слова.")
     await set_states(state=state, data=data)
+    await state.update_data(type_learning="new_")
     kb = await learning_words_kb(prefix="new_", words=get_words_for_kb(data))
     await message.answer(
         text=f"<b>Выберите правильный перевод:</b>\n{data['ru_correct']}",
         reply_markup=kb)
 
 
-@router.callback_query(F.data.startswith("new_"), StateFilter(LearningWordState))
-async def learning_new_words(callback: CallbackQuery, state: FSMContext):
-    words = await state.get_data()
+@router.callback_query(
+    F.data.startswith("new_") | F.data.startswith("repeat_") | F.data.startswith("random_"),
+    StateFilter(LearningWordState))
+async def learning_words(callback: CallbackQuery, state: FSMContext):
+    data = await state.get_data()
     kb = await learning_words_after_the_response_kb()
-    if callback.data.replace("new_", "") == words['en_correct']:
+    prefix = data['type_learning']
+    if callback.data.replace(prefix, "") == data['en_correct']:
+        await callback.answer("Верно!")
         await callback.message.edit_text(
-            f"<b>Верно! Правильный перевод:</b>\n{words['en_correct']}",
+            f"<b>Верно! Правильный перевод:</b>\n{data['en_correct']}",
             reply_markup=kb)
     else:
+        await callback.answer("Не верно!")
         await callback.message.edit_text(
-            f"<b>Не верно! Правильный перевод:</b>\n{words['en_correct']}",
+            f"<b>Не верно! Правильный перевод:</b>\n{data['en_correct']}",
             reply_markup=kb)
 
 
@@ -42,7 +60,7 @@ async def answer_to_the_choice(callback: CallbackQuery, state: FSMContext, reque
         return await callback.message.edit_text("Хорошо позанимались!", reply_markup=None)
     elif callback.data.replace("answer_", "") == "remember":
         data = await get_random_words(callback, request)
-        await set_state(state=state, data=data)
+        await set_states(state=state, data=data)
         kb = await learning_words_kb(prefix="new_", words=get_words_for_kb(data))
         await callback.answer("Слово добавлено в словарь")
         await callback.message.edit_text(
@@ -50,7 +68,7 @@ async def answer_to_the_choice(callback: CallbackQuery, state: FSMContext, reque
             reply_markup=kb)
     else:
         data = await get_random_words(callback, request)
-        await set_state(state=state, data=data)
+        await set_states(state=state, data=data)
         kb = await learning_words_kb(prefix="new_", words=get_words_for_kb(data))
         await callback.answer("Слово будет показано снова")
         await callback.message.edit_text(
