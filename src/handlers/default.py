@@ -1,5 +1,6 @@
 from aiogram import Router
 from aiogram.filters import CommandStart, Command
+from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from database.repo import Request
@@ -9,7 +10,8 @@ router = Router(name=__name__)
 
 
 @router.message(CommandStart())
-async def start(message: Message, request: Request):
+async def start(message: Message, request: Request, state: FSMContext):
+    await state.clear()
     await request.users.get_or_create_user(
         tg_id=message.from_user.id,
         username=message.from_user.username,

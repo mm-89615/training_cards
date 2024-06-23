@@ -9,7 +9,8 @@ async def learning_words_kb(prefix: str, words: dict[str, str]):
     random.shuffle(keys)
     shuffled_words = dict(keys)
     for word in shuffled_words:
-        kb[word] = f"{prefix}{shuffled_words[word]}"
+        kb[word] = f"{prefix}{word}"
+    print(kb)
     return await Builder.inline(buttons=kb, size=(2, 2))
 
 
