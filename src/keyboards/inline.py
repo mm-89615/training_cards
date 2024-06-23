@@ -14,7 +14,7 @@ async def start_kb(message: Message):
     if message.from_user.id in settings.bot.admin_ids:
         kb.append("⚙️ Админ панель")
 
-    return await Builder.reply(buttons=kb, size=(1,))
+    return await Builder.reply(buttons=kb, size=(1,), one_time_keyboard=True)
 
 
 async def admin_kb():
@@ -24,4 +24,4 @@ async def admin_kb():
         "✖️ Удалить слово",
     ]
 
-    return await Builder.reply(buttons=kb, size=(1,))
+    return await Builder.reply(buttons=kb, size=(1,), one_time_keyboard=True)

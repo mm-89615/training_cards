@@ -17,9 +17,9 @@ async def start(message: Message, request: Request):
         last_name=message.from_user.last_name
     )
     kb = await start_kb(message)
-    return message.answer(f"Добро пожаловать, {message.from_user.first_name}!", reply_markup=kb)
+    await message.answer(f"Добро пожаловать, {message.from_user.first_name}!", reply_markup=kb)
 
 
 @router.message(Command("about"))
 async def about(message: Message):
-    return message.answer("О проекте")
+    await message.answer("О проекте")
