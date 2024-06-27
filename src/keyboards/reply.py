@@ -1,23 +1,52 @@
-import random
+from aiogram.types import Message
 
+from config import settings
 from .builders import Builder
 
 
-async def learning_words_kb(prefix: str, words: dict[str, str]):
-    kb = {}
-    keys = list(words.items())
-    random.shuffle(keys)
-    shuffled_words = dict(keys)
-    for word in shuffled_words:
-        kb[word] = f"{prefix}{word}"
-    print(kb)
-    return await Builder.inline(buttons=kb, size=(2, 2))
+def start_kb(message: Message):
+    kb = [
+        "📝 Учить новые слова",
+        "📖 Повторить слова",
+        "🔁 Случайные слова",
+    ]
+
+    if message.from_user.id in settings.bot.admin_ids:
+        kb.append("⚙️ Админ панель")
+
+    return Builder.reply(buttons=kb, size=(1,), one_time_keyboard=True)
 
 
-async def learning_words_after_the_response_kb():
-    kb = {
-        "✅ Добавить себе!": "answer_remember",
-        "❎ Пропустить": "answer_not_remember",
-        "❌ Закончить": "answer_finish",
-    }
-    return await Builder.inline(buttons=kb, size=(2,1), one_time_keyboard=True)
+def admin_kb():
+    kb = [
+        "➕ Добавить слово",
+        "➖ Изменить слово",
+        "✖️ Удалить слово",
+    ]
+
+    return Builder.reply(buttons=kb, size=(1,), one_time_keyboard=True)
+
+
+class StartKb:
+    new_word = "📝 Учить новые слова"
+    repeat_words = "📖 Повторить слова"
+    random_words = "🔁 Случайные слова"
+    admin_panel = "⚙️ Админ панель"
+
+    @staticmethod
+    def get_kb(message: Message):
+        kb = [StartKb.new_word, StartKb.repeat_words, StartKb.random_words]
+        if message.from_user.id in settings.bot.admin_ids:
+            kb.append("⚙️ Админ панель")
+        return Builder.reply(buttons=kb, size=(1,), one_time_keyboard=True)
+
+
+class AdminKb:
+    add_word = "➕ Добавить слово"
+    change_word = "➖ Изменить слово"
+    delete_word = "✖️ Удалить слово"
+
+    @staticmethod
+    def get_kb():
+        kb = [AdminKb.add_word, AdminKb.change_word, AdminKb.delete_word]
+        return Builder.reply(buttons=kb, size=(1,), one_time_keyboard=True)
