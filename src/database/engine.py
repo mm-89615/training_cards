@@ -27,13 +27,16 @@ async_session: async_sessionmaker[AsyncSession] = async_sessionmaker(
 
 async def main():
     async with async_session() as session:
+        pass
+
         # await Request(session).user_words.add_user_word(user_id=1, word_id=50, in_russian='слово', in_english='word')
         # result = await Request(session).words.get_four_random_words(123)
         # result = await Request(session).words.get_new_word_not_in_user_words(123)
-        result = await Request(session).user_words.get_new_word_from_user_words(123)
+        # result = await Request(session).user_words.get_new_word_from_user_words(123)
+        # result = await Request(session).words.get_new_word_not_in_user_words(332637284)
         # for r in result:
         #     print(r)
-        print(result.in_russian, result.in_english)
+        # print(result.in_russian, result.in_english)
 
 if __name__ == '__main__':
     asyncio.run(main())

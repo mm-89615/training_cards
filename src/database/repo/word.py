@@ -18,9 +18,9 @@ class WordRequests(BaseRequest):
         Get new word from common words where word not in user words
         """
         stmt = (select(Word)
-                .where(Word.id.not_in((
-                    select(UserWord.word_id)
-                    .where(UserWord.user_tg_id == tg_id))))
+                .where(Word.id.not_in((select(UserWord.word_id)
+                                       .where(UserWord.user_tg_id == tg_id)
+                                       .where(UserWord.word_id.is_not(None)))))
                 .order_by(func.random())
                 .limit(1))
         result = await self.session.scalars(stmt)
@@ -42,11 +42,11 @@ class WordRequests(BaseRequest):
         """
         Get 4 random words from common or user words
         """
-        stmt1 = select(Word.in_english, Word.in_russian)
-        stmt2 = (select(UserWord.in_english, UserWord.in_russian)
-                 .where(UserWord.user_tg_id == tg_id))
-        union_stmt = (select(stmt1.union_all(stmt2).subquery())
+        stmt1 = select(Word.id, Word.in_english, Word.in_russian)
+        stmt2 = (select(UserWord.word_id, UserWord.in_english, UserWord.in_russian)
+                 .where(UserWord.word_id.is_(None), UserWord.user_tg_id == tg_id))
+        union_stmt = (select(union_all(stmt1, stmt2).subquery())
                       .order_by(func.random())
                       .limit(4))
-        result = await self.session.scalars(union_stmt)
+        result = await self.session.execute(union_stmt)
         return result.all()
