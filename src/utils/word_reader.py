@@ -17,5 +17,5 @@ async def insert_words_to_db(filepath, as_session: async_session):
                 await WordRequests(session).add_word(row[0], row[1])
 
 
-asyncio.run(insert_words_to_db(filepath=words_path, as_session=async_session))
-
+if __name__ == '__main__':
+    asyncio.run(insert_words_to_db(filepath=words_path, as_session=async_session))

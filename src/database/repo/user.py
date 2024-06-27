@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import Optional
 
 from sqlalchemy import func
@@ -37,4 +36,4 @@ class UserRequests(BaseRequest):
         )
         result = await self.session.execute(insert_stmt)
         await self.session.commit()
-        return result.scalar_one()
+        return result.one()
