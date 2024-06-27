@@ -23,24 +23,31 @@ class WordRequests(BaseRequest):
         result = await self.session.scalars(stmt)
         return result.all()
 
-    async def get_random_words(self, word_id: int):
+    async def get_four_random_words(self):
         stmt = (select(Word)
-                .where(Word.id.not_in([word_id]))
                 .order_by(func.random())
-                .limit(3))
+                .limit(4))
         result = await self.session.scalars(stmt)
         return result.all()
 
     async def get_new_word_not_in_user_words(self, tg_id: int):
         stmt = (select(Word)
                 .where(Word.id.not_in((
-                    select(UserWord.word_id)
-                    .join(User).where(User.tg_id == tg_id)
-                    .where(UserWord.user_id == User.id))))
+            select(UserWord.word_id)
+            .join(User).where(User.tg_id == tg_id)
+            .where(UserWord.user_id == User.id))))
                 .order_by(func.random())
                 .limit(1))
         result = await self.session.scalars(stmt)
         return result.one_or_none()
+
+    async def get_three_random_words(self, word_id: int):
+        stmt = (select(Word)
+                .where(Word.id.not_in([word_id]))
+                .order_by(func.random())
+                .limit(3))
+        result = await self.session.scalars(stmt)
+        return result.all()
 
     async def get_all_user_words(self, tg_id: int):
         stmt = (
@@ -56,9 +63,9 @@ class WordRequests(BaseRequest):
     async def get_new_word_in_user_words(self, tg_id: int):
         stmt = (select(Word)
                 .where(Word.id.in_((
-                    select(UserWord.word_id)
-                    .join(User).where(User.tg_id == tg_id)
-                    .where(UserWord.user_id == User.id))))
+            select(UserWord.word_id)
+            .join(User).where(User.tg_id == tg_id)
+            .where(UserWord.user_id == User.id))))
                 .order_by(func.random())
                 .limit(1))
         result = await self.session.scalars(stmt)

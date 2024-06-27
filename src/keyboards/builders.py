@@ -4,7 +4,7 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 
 class Builder:
     @staticmethod
-    async def reply(
+    def reply(
             buttons: list[str],
             size: tuple = (1,),
             resize_keyboard: bool = True,
@@ -17,7 +17,7 @@ class Builder:
         return keyboard.as_markup(resize_keyboard=resize_keyboard, one_time_keyboard=one_time_keyboard)
 
     @staticmethod
-    async def inline(
+    def inline(
             buttons: dict,
             size: tuple = (1,),
             resize_keyboard: bool = True,

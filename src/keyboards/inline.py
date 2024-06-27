@@ -1,27 +1,41 @@
-from aiogram.types import Message
+import random
 
-from config import settings
 from .builders import Builder
 
 
-async def start_kb(message: Message):
-    kb = [
-        "📝 Учить новые слова",
-        "📖 Повторить слова",
-        "🔁 Случайные слова",
-    ]
-
-    if message.from_user.id in settings.bot.admin_ids:
-        kb.append("⚙️ Админ панель")
-
-    return await Builder.reply(buttons=kb, size=(1,), one_time_keyboard=True)
+def learning_words_kb(prefix: str, words: dict[str, str]):
+    kb = {}
+    keys = list(words.items())
+    random.shuffle(keys)
+    shuffled_words = dict(keys)
+    for word in shuffled_words:
+        kb[word] = f"{prefix}{word}"
+    return Builder.inline(buttons=kb, size=(2, 2))
 
 
-async def admin_kb():
-    kb = [
-        "➕ Добавить слово",
-        "➖ Изменить слово",
-        "✖️ Удалить слово",
-    ]
+class ChoiceActionsKb:
+    prefix = "action_"
+    add_to_yourself = ("✅ Добавить себе!", f"{prefix}add")
+    skip = ("❎ Пропустить", f"{prefix}skip")
+    next = ("➡️ Следующее слово", f"{prefix}next")
+    cancel = ("❌ Закончить", f"{prefix}cancel")
 
-    return await Builder.reply(buttons=kb, size=(1,), one_time_keyboard=True)
+    @staticmethod
+    def new_():
+        kb = {
+            ChoiceActionsKb.add_to_yourself[0]: ChoiceActionsKb.add_to_yourself[1],
+            ChoiceActionsKb.skip[0]: ChoiceActionsKb.skip[1],
+            ChoiceActionsKb.cancel[0]: ChoiceActionsKb.cancel[1],
+        }
+        return Builder.inline(buttons=kb, size=(2, 1), one_time_keyboard=True)
+
+    @staticmethod
+    def random_():
+        kb = {
+            ChoiceActionsKb.next[0]: ChoiceActionsKb.next[1],
+            ChoiceActionsKb.cancel[0]: ChoiceActionsKb.cancel[1],
+        }
+        return Builder.inline(buttons=kb, size=(1, 1), one_time_keyboard=True)
+
+
+
