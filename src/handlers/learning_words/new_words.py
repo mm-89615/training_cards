@@ -20,7 +20,7 @@ async def get_new_words(message: Message, state: FSMContext, request: Request):
     await set_new_state(state=state, data=data, type_learning=TypeLearning.new_)
     kb = learning_words_kb(prefix=TypeLearning.new_, words=get_words_for_kb(data))
     await message.answer(
-        text=f"<b>Выберите правильный перевод:</b>\n{data['ru_correct']}",
+        text=f"Выберите правильный перевод:\n\n<b>{data['ru_correct']}</b>",
         reply_markup=kb)
 
 

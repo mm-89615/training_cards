@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, Optional
 
 from aiogram.types import Message, CallbackQuery
 
@@ -25,11 +25,12 @@ class GetData:
         find_word = await request.user_words.get_new_word_from_user_words(message.from_user.id)
         if find_word is None:
             return
-        other_words = await request.words.get_three_random_words(find_word.id)
+        other_words = await request.words.get_three_random_words(find_word.word_id)
         data = {
             "en_correct": find_word.in_english,
             "ru_correct": find_word.in_russian,
             "id_correct": find_word.id,
+            "repetitions": find_word.repetition_counter,
             "incorrect": {word.in_english: word.in_russian for word in other_words}
         }
         return data

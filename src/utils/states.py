@@ -14,5 +14,6 @@ class LearningWordState(StatesGroup):
     en_correct = State()
     ru_correct = State()
     id_correct = State()
+    repetitions = State()
     incorrect = State()
     count_words = State()
