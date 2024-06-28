@@ -1,3 +1,5 @@
+from typing import Optional
+
 from sqlalchemy import select, func, union_all
 from sqlalchemy.dialects.postgresql import insert
 
@@ -19,8 +21,8 @@ class WordRequests(BaseRequest):
         """
         stmt = (select(Word)
                 .where(Word.id.not_in((select(UserWord.word_id)
-                                       .where(UserWord.user_tg_id == tg_id)
-                                       .where(UserWord.word_id.is_not(None)))))
+                                       .where(UserWord.user_tg_id == tg_id,
+                                              UserWord.word_id.is_not(None)))))
                 .order_by(func.random())
                 .limit(1))
         result = await self.session.scalars(stmt)

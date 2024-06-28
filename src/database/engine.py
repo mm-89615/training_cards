@@ -34,8 +34,9 @@ async def main():
         # result = await Request(session).words.get_new_word_not_in_user_words(123)
         # result = await Request(session).user_words.get_new_word_from_user_words(123)
         # result = await Request(session).words.get_new_word_not_in_user_words(332637284)
-        # for r in result:
-        #     print(r)
+        result = await Request(session).user_words.get_new_word_from_user_words(332637284)
+        for r in result:
+            print(r.repetition_counter, r.in_russian, r.in_english)
         # print(result.in_russian, result.in_english)
 
 if __name__ == '__main__':

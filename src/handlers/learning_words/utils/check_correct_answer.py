@@ -8,11 +8,11 @@ async def check_correct_answer(callback: CallbackQuery, state: FSMContext, prefi
     if callback.data.replace(prefix, "") == data['en_correct']:
         await callback.answer("Верно!")
         await callback.message.edit_text(
-            f"<b>Верно! Правильный перевод:</b>\n{data['en_correct']}",
+            f"✅ Верно! Правильный перевод:\n\n<b>{data['en_correct']}</b>",
             reply_markup=kb)
     else:
         await callback.answer("Не верно!")
         await callback.message.edit_text(
-            f"<b>Не верно! Правильный перевод:</b>\n{data['en_correct']}",
+            f"❌ Не верно! Правильный перевод:\n\n<b>{data['en_correct']}</b>",
             reply_markup=kb)
     await state.update_data(count_words=(data["count_words"] + 1))

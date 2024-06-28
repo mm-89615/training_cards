@@ -11,6 +11,8 @@ async def set_new_state(state: FSMContext, data: dict[str, str], type_learning: 
                             id_correct=data["id_correct"],
                             incorrect=data["incorrect"],
                             count_words=0)
+    if "repetitions" in data:
+        await state.update_data(repetitions=data["repetitions"])
 
 
 async def update_state(state: FSMContext, data: dict[str, str]):
@@ -18,3 +20,5 @@ async def update_state(state: FSMContext, data: dict[str, str]):
                             ru_correct=data["ru_correct"],
                             id_correct=data["id_correct"],
                             incorrect=data["incorrect"])
+    if "repetitions" in data:
+        await state.update_data(repetitions=data["repetitions"])

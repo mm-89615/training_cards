@@ -16,7 +16,7 @@ def learning_words_kb(prefix: str, words: dict[str, str]):
 class ChoiceActionsKb:
     prefix = "action_"
     add_to_yourself = ("✅ Добавить себе!", f"{prefix}add")
-    skip = ("❎ Пропустить", f"{prefix}skip")
+    skip = ("➡️ Пропустить", f"{prefix}skip")
     next = ("➡️ Следующее слово", f"{prefix}next")
     remember = ("✅ Запомнил", f"{prefix}remember")
     not_remember = ("🔁 Повторить еще", f"{prefix}not_remember")
