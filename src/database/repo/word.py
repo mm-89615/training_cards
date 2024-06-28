@@ -15,7 +15,7 @@ class WordRequests(BaseRequest):
         await self.session.execute(stmt)
         await self.session.commit()
 
-    async def get_new_word_not_in_user_words(self, tg_id: int):
+    async def get_new_word_not_in_user_words(self, tg_id: int, old_word_id: Optional[int] = None):
         """
         Get new word from common words where word not in user words
         """
