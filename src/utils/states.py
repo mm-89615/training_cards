@@ -17,3 +17,15 @@ class LearningWordState(StatesGroup):
     repetitions = State()
     incorrect = State()
     count_words = State()
+
+
+class DictType(StrEnum):
+    admin = "admin"
+    user = "user"
+
+
+class AddWordState(StatesGroup):
+    dict_type = State()
+    en = State()
+    ru = State()
+    confirm = State()
