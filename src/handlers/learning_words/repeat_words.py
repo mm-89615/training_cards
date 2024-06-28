@@ -23,6 +23,7 @@ async def get_repeat_words(message: Message, state: FSMContext, request: Request
         text=f"<b>Выберите правильный перевод:</b>\n{data['ru_correct']}",
         reply_markup=kb)
 
+
 @router.callback_query(F.data.startswith(TypeLearning.repeat_))
 async def correct_answer(callback: CallbackQuery, state: FSMContext):
     kb = ChoiceActionsKb.repeat_()

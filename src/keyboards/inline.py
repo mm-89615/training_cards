@@ -19,7 +19,7 @@ class ChoiceActionsKb:
     skip = ("❎ Пропустить", f"{prefix}skip")
     next = ("➡️ Следующее слово", f"{prefix}next")
     remember = ("✅ Запомнил", f"{prefix}remember")
-    not_remember = ("🔁 Повторить еще", f"{prefix}remember")
+    not_remember = ("🔁 Повторить еще", f"{prefix}not_remember")
     cancel = ("❌ Закончить", f"{prefix}cancel")
 
     @staticmethod

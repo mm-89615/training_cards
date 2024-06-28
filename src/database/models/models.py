@@ -21,7 +21,7 @@ class Word(IntIdPkMixin, TimestampMixin, Base):
 
 
 class UserWord(IntIdPkMixin, TimestampMixin, Base):
-    user_tg_id: Mapped[int] = mapped_column(ForeignKey("users.tg_id", ondelete="CASCADE"))
+    user_tg_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("users.tg_id", ondelete="CASCADE"))
     word_id: Mapped[int | None] = mapped_column(ForeignKey("words.id", ondelete="CASCADE"))
     in_russian: Mapped[str | None] = mapped_column(String(255))
     in_english: Mapped[str | None] = mapped_column(String(100))
