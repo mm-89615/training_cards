@@ -29,3 +29,13 @@ class AddWordState(StatesGroup):
     en = State()
     ru = State()
     confirm = State()
+
+
+class FindWordState(StatesGroup):
+    dict_type = State()
+    word_id = State()
+    old_en = State()
+    old_ru = State()
+    en = State()
+    ru = State()
+    confirm = State()

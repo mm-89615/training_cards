@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import select, func, update
+from sqlalchemy import select, func, update, delete
 from sqlalchemy.dialects.postgresql import insert, INTERVAL
 from sqlalchemy.sql.functions import concat
 
@@ -46,11 +46,11 @@ class UserWordRequests(BaseRequest):
         stmt = (select(UserWord)
                 .where(UserWord.user_tg_id == tg_id)
                 .where((repetitions == 0) |
-                        ((repetitions == 1) & interval_30_min) |
-                        ((repetitions == 2) & interval_1_day) |
-                        ((repetitions == 3) & interval_1_week) |
-                        ((repetitions == 4) & interval_2_week) |
-                        ((repetitions >= 5) & interval_2_month))
+                       ((repetitions == 1) & interval_30_min) |
+                       ((repetitions == 2) & interval_1_day) |
+                       ((repetitions == 3) & interval_1_week) |
+                       ((repetitions == 4) & interval_2_week) |
+                       ((repetitions >= 5) & interval_2_month))
                 .order_by(UserWord.repetition_counter.desc(), UserWord.updated_at.asc())
                 .limit(1))
         result = await self.session.scalars(stmt)
@@ -67,5 +67,35 @@ class UserWordRequests(BaseRequest):
         stmt = (update(UserWord)
                 .where(UserWord.id == word_id)
                 .values(updated_at=func.now()))
+        await self.session.execute(stmt)
+        await self.session.commit()
+
+    async def get_word_by_english(self, in_english: str, tg_id: int):
+        stmt = (select(UserWord)
+                .where(UserWord.in_english.ilike('%' + in_english + '%'))
+                .where(UserWord.user_tg_id == tg_id))
+        result = await self.session.scalars(stmt)
+        return result.all()
+
+    async def get_word_by_id(self, word_id: int, tg_id: int):
+        stmt = (select(UserWord)
+                .where(UserWord.id == word_id)
+                .where(UserWord.user_tg_id == tg_id))
+        result = await self.session.scalars(stmt)
+        return result.one_or_none()
+
+    async def delete_word(self, word_id: int, tg_id: int):
+        stmt = (delete(UserWord)
+                .where(UserWord.id == word_id)
+                .where(UserWord.user_tg_id == tg_id))
+        await self.session.execute(stmt)
+        await self.session.commit()
+
+    async def update_word(self, word_id: int, in_english: str, in_russian: str, tg_id: int):
+        stmt = (update(UserWord)
+                .where(UserWord.id == word_id)
+                .where(UserWord.user_tg_id == tg_id)
+                .values(in_english=in_english,
+                        in_russian=in_russian))
         await self.session.execute(stmt)
         await self.session.commit()

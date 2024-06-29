@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import select, func, union_all
+from sqlalchemy import select, func, union_all, delete, update
 from sqlalchemy.dialects.postgresql import insert
 
 from .base import BaseRequest
@@ -52,3 +52,29 @@ class WordRequests(BaseRequest):
                       .limit(4))
         result = await self.session.execute(union_stmt)
         return result.all()
+
+    async def get_word_by_english(self, in_english: str):
+        stmt = (select(Word)
+                .where(Word.in_english.ilike('%' + in_english + '%')))
+        result = await self.session.scalars(stmt)
+        return result.all()
+
+    async def get_word_by_id(self, word_id: int):
+        stmt = (select(Word)
+                .where(Word.id == word_id))
+        result = await self.session.scalars(stmt)
+        return result.one_or_none()
+
+    async def delete_word(self, word_id: int):
+        stmt = (delete(Word)
+                .where(Word.id == word_id))
+        await self.session.execute(stmt)
+        await self.session.commit()
+
+    async def update_word(self, word_id: int, in_english: str, in_russian: str):
+        stmt = (update(Word)
+                .where(Word.id == word_id)
+                .values(in_english=in_english,
+                        in_russian=in_russian))
+        await self.session.execute(stmt)
+        await self.session.commit()

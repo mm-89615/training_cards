@@ -34,34 +34,35 @@ class StartKb:
         ]
         if message.from_user.id in settings.bot.admin_ids:
             kb.append("⚙️ Админ панель")
-        return Builder.reply(buttons=kb, size=(1,), one_time_keyboard=True)
+        return Builder.reply(buttons=kb, size=(1, 1, 1, 2), one_time_keyboard=True)
 
 
 class AdminKb:
     add_word = "✅ Добавить слово"
-    update_word = "🔁 Изменить слово"
-    delete_word = "❌ Удалить слово"
+    find_word = "🔎 Найти слово"
 
     @staticmethod
     def get_kb():
         kb = [
             AdminKb.add_word,
-            AdminKb.update_word,
-            AdminKb.delete_word
+            AdminKb.find_word,
         ]
-        return Builder.reply(buttons=kb, size=(1,), one_time_keyboard=True)
+        return Builder.reply(buttons=kb, size=(2,), one_time_keyboard=True)
 
 
 class UserKb:
     add_word = "✅ Добавить новое слово"
-    update_word = "🔁 Изменить свое слово"
-    delete_word = "❌ Удалить слово из словаря"
+    find_word = "🔍 Найти слово"
 
     @staticmethod
     def get_kb():
         kb = [
             UserKb.add_word,
-            UserKb.update_word,
-            UserKb.delete_word
+            UserKb.find_word,
         ]
-        return Builder.reply(buttons=kb, size=(1,), one_time_keyboard=True)
+        return Builder.reply(buttons=kb, size=(2,), one_time_keyboard=True)
+
+
+def get_word_kb(word):
+    kb = [word]
+    return Builder.reply(buttons=kb, size=(1,), one_time_keyboard=True)
