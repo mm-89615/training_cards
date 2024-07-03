@@ -1,11 +1,9 @@
-import asyncio
 import csv
-import os
 
 import aiofiles
+
 from database.engine import async_session
 from database.repo.word import WordRequests
-
 
 words_small_path = "data/words_small.csv"
 words_big_path = "data/words.csv"
