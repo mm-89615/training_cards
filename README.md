@@ -27,6 +27,8 @@ DB__URL=postgresql+asyncpg://user:password@host:port/db_name
 BOT__ADMINS=12345,43214
 ```
 - При запуске **main.py** вам предложат заполнить базу данных словами.
+  ![image](https://github.com/mm-89615/training_cards/assets/160840852/ed6402ea-7337-4d0f-90ce-2c6e8561d2a8)
+
 
 
 ## Доступные команды
