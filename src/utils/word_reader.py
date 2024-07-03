@@ -37,4 +37,3 @@ async def fill_db():
                 break
             else:
                 print("Неверное значение")
-

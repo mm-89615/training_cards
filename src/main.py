@@ -6,7 +6,6 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
 from config import settings
-from database.repo import Request
 from handlers import router as main_router
 from middlewares import register_global_middlewares
 from utils import on_startup, on_shutdown, setup_logging

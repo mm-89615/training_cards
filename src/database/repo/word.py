@@ -1,5 +1,3 @@
-from typing import Optional
-
 from sqlalchemy import select, func, union_all, delete, update
 from sqlalchemy.dialects.postgresql import insert
 
