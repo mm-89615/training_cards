@@ -5,7 +5,7 @@ __all__ = (
     "CommonKb",
     "ChoiceActionsKb",
     "learning_words_kb",
-    "get_word_kb"
+    "get_word_kb",
 )
 
 from .inline import learning_words_kb, ChoiceActionsKb

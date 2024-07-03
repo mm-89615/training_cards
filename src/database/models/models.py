@@ -21,8 +21,12 @@ class Word(IntIdPkMixin, TimestampMixin, Base):
 
 
 class UserWord(IntIdPkMixin, TimestampMixin, Base):
-    user_tg_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("users.tg_id", ondelete="CASCADE"))
-    word_id: Mapped[int | None] = mapped_column(ForeignKey("words.id", ondelete="CASCADE"))
+    user_tg_id: Mapped[int] = mapped_column(
+        BigInteger, ForeignKey("users.tg_id", ondelete="CASCADE")
+    )
+    word_id: Mapped[int | None] = mapped_column(
+        ForeignKey("words.id", ondelete="CASCADE")
+    )
     in_russian: Mapped[str | None] = mapped_column(String(255))
     in_english: Mapped[str | None] = mapped_column(String(100))
     repetition_counter: Mapped[int] = mapped_column(server_default="0")
@@ -36,4 +40,3 @@ class UserWord(IntIdPkMixin, TimestampMixin, Base):
             word = select(Word).where(Word.id == self.word_id).scalar_one()
             self.in_russian = word.in_russian
             self.in_english = word.in_english
-

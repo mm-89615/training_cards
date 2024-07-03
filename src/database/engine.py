@@ -1,5 +1,3 @@
-import asyncio
-
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
@@ -22,12 +20,3 @@ async_session: async_sessionmaker[AsyncSession] = async_sessionmaker(
     autocommit=False,
     expire_on_commit=False,
 )
-
-
-async def main():
-    async with async_session() as session:
-        pass
-
-
-if __name__ == '__main__':
-    asyncio.run(main())

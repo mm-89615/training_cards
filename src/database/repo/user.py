@@ -9,11 +9,11 @@ from ..models import User
 
 class UserRequests(BaseRequest):
     async def get_or_create_user(
-            self,
-            tg_id: int,
-            username: Optional[str] = None,
-            first_name: Optional[str] = None,
-            last_name: Optional[str] = None,
+        self,
+        tg_id: int,
+        username: Optional[str] = None,
+        first_name: Optional[str] = None,
+        last_name: Optional[str] = None,
     ):
         insert_stmt = (
             insert(User)
@@ -21,7 +21,7 @@ class UserRequests(BaseRequest):
                 tg_id=tg_id,
                 username=username,
                 first_name=first_name,
-                last_name=last_name
+                last_name=last_name,
             )
             .on_conflict_do_update(
                 index_elements=[User.tg_id],
@@ -29,8 +29,8 @@ class UserRequests(BaseRequest):
                     username=username,
                     first_name=first_name,
                     last_name=last_name,
-                    updated_at=func.now()
-                )
+                    updated_at=func.now(),
+                ),
             )
             .returning(User)
         )

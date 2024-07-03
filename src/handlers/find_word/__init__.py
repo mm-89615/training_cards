@@ -1,4 +1,4 @@
-__all__ = ('router',)
+__all__ = ("router",)
 
 from aiogram import Router
 
@@ -10,8 +10,5 @@ from .update_word import router as update_word_router
 router = Router(name=__name__)
 
 router.include_routers(
-    exit_router,
-    update_word_router,
-    get_word_router,
-    request_processing_router
+    exit_router, update_word_router, get_word_router, request_processing_router
 )

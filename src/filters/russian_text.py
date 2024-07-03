@@ -8,4 +8,4 @@ class RussianText(BaseFilter):
     pattern = re.compile(r"^[а-яА-Я0-9 ,.?()-]+$")
 
     async def __call__(self, message: Message) -> bool:
-        return self.pattern.match(message.text)
+        return bool(self.pattern.match(message.text))

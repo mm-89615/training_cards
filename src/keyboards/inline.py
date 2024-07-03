@@ -47,4 +47,3 @@ class ChoiceActionsKb:
             ChoiceActionsKb.cancel[0]: ChoiceActionsKb.cancel[1],
         }
         return Builder.inline(buttons=kb, size=(1, 1), one_time_keyboard=True)
-

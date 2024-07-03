@@ -13,5 +13,5 @@ router.include_routers(
     add_word_router,
     get_english_word_router,
     get_russian_word_router,
-    confirm_stage_router
+    confirm_stage_router,
 )

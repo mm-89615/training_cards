@@ -18,6 +18,8 @@ async def get_word_en(message: Message, state: FSMContext):
 
 @router.message(StateFilter(AddWordState.en))
 async def get_word_en_incorrect(message: Message):
-    await message.answer(f"Убедитесь что правильно ввели слово!\n"
-                         f"Доступны буквы английского алфавита и символы: <b>' , . ? ( ) - </b> \n"
-                         f"Попробуйте ещё раз ввести слово на английском языке: ")
+    await message.answer(
+        f"Убедитесь что правильно ввели слово!\n"
+        f"Доступны буквы английского алфавита и символы: <b>' , . ? ( ) - </b> \n"
+        f"Попробуйте ещё раз ввести слово на английском языке: "
+    )

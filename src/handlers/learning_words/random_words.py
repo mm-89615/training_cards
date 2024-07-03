@@ -20,11 +20,13 @@ async def get_random_words(message: Message, state: FSMContext, request: Request
     kb = learning_words_kb(prefix=TypeLearning.random_, words=get_words_for_kb(data))
     await message.answer(
         text=f"Выберите правильный перевод:\n\n<b>{data['ru_correct']}</b>",
-        reply_markup=kb
+        reply_markup=kb,
     )
 
 
 @router.callback_query(F.data.startswith(TypeLearning.random_))
 async def correct_answer(callback: CallbackQuery, state: FSMContext):
     kb = ChoiceActionsKb.random_()
-    await check_correct_answer(callback=callback, state=state, prefix=TypeLearning.random_, kb=kb)
+    await check_correct_answer(
+        callback=callback, state=state, prefix=TypeLearning.random_, kb=kb
+    )
