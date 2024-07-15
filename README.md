@@ -14,6 +14,20 @@
 ```
 git clone https://github.com/mm-89615/training_cards.git
 ```
+- Создайте **виртуальное окружение**:
+```
+python3 -m venv .venv  # Unix/macOS
+python -m venv .venv  # Windows
+```
+- Подключитесь к нему:
+```
+source .venv/bin/activate  # Unix/macOS
+.venv\Scripts\activate  # Windows
+```
+- Установите **зависимости**:
+```
+poetry install
+```
 - Создайте своего бота через [BotFather](https://t.me/BotFather)
 - Создайте базу данных на вашем компьютере.
 - Внесите обязательные поля в переменные окружения.
@@ -25,6 +39,11 @@ DB__URL=postgresql+asyncpg://user:password@host:port/db_name
 Получить свой ID можно при помощи бота [Get My ID](https://t.me/getmyid_bot)
 ```
 BOT__ADMINS=12345,43214
+```
+- Выполните миграции, предварительно перейдя в папку **src**:
+```
+cd src
+alembic upgrade head
 ```
 - При запуске **main.py** вам предложат заполнить базу данных словами.
 
